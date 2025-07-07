@@ -8,7 +8,6 @@ import phik                     # Biblioteca para correlação Phi-K entre vari�
 from scipy import stats                               # Módulo de estatística do SciPy
 from scipy.stats import skew, kurtosis, gaussian_kde  # Funções para calcular assimetria e curtose
 from ydata_profiling import ProfileReport             # Biblioteca para gerar relatórios automáticos
-# from IPython.display import display                   # Funções para exibir conteúdo em notebooks
 from IPython.display import display, display_markdown # Funções para exibir conteúdo em notebooks
 
 warnings.simplefilter('ignore', Warning) # Suprimir todos os warnings de forma simples
@@ -71,7 +70,6 @@ class Eda: # Definição da classe para Análise Exploratória de Dados (EDA)
     def statistics(self, df, section, lv): # Method para exibir estatísticas descritivas
         print() # Imprime linha em branco para espaçamento
         display_markdown(f"### {section}. ESTATÍSTICAS DESCRITIVAS BÁSICAS - {lv}", raw=True) # Exibe título da seção
-        # print(f"{section}. ESTATÍSTICAS DESCRITIVAS BÁSICAS - {lv}")
         print(f"Dimensões do Dataset de Treino: {df.shape}\n") # Exibe dimensões do dataset
         self.print_statistics(df) # Chama method para imprimir estatísticas detalhadas
 
@@ -79,21 +77,16 @@ class Eda: # Definição da classe para Análise Exploratória de Dados (EDA)
     @staticmethod
     def print_statistics(df): # Method que exibe várias estatísticas do dataset
         display(df.info(show_counts=False)) # Exibe informações gerais do DataFrame
-        # display_markdown("#### [Primeiras Linhas]", raw=True) # Exibe subtítulo para primeiras linhas
-        print("\n[Primeiras Linhas]")
+        display_markdown("#### [Primeiras Linhas]", raw=True) # Exibe subtítulo para primeiras linhas
         display(df.head()) # Exibe as 5 primeiras linhas
-        # display_markdown("#### [Últimas Linhas]", raw=True) # Exibe subtítulo para últimas linhas
-        print("\n[Últimas Linhas]")
+        display_markdown("#### [Últimas Linhas]", raw=True) # Exibe subtítulo para últimas linhas
         display(df.tail()) # Exibe as 5 últimas linhas
         numeric_cols = df.select_dtypes(include=[np.number]).columns # Seleciona apenas colunas numéricas
-        # display_markdown("#### [Features Numéricas]", raw=True) # Exibe subtítulo para features numéricas
-        print("\n[Features Numéricas]")
+        display_markdown("#### [Features Numéricas]", raw=True) # Exibe subtítulo para features numéricas
         display(df[numeric_cols].describe()) # Exibe estatísticas descritivas das colunas numéricas
-        # display_markdown("#### [Features Categóricas]", raw=True) # Exibe subtítulo para features categóricas
-        print("\n[Features Categóricas]")
+        display_markdown("#### [Features Categóricas]", raw=True) # Exibe subtítulo para features categóricas
         display(df.describe(include=['object', 'category', 'bool'])) # Exibe estatísticas das colunas categóricas
-        # display_markdown("#### [Resumo Estatístico]", raw=True) # Exibe subtítulo para resumo estatístico
-        print("\n[Resumo Estatístico]")
+        display_markdown("#### [Resumo Estatístico]", raw=True) # Exibe subtítulo para resumo estatístico
         display(df.describe().T) # Exibe resumo estatístico transposto
 
     ###################################################################################################################################################
@@ -102,8 +95,7 @@ class Eda: # Definição da classe para Análise Exploratória de Dados (EDA)
 
     ###################################################################################################################################################
     def analysis_target(self): # Method para analisar a variável target
-        # display_markdown(f"### 2. ANÁLISE DA VARIÁVEL TARGET - [{self.target}]", raw=True) # Exibe título da análise
-        print(f"2. ANÁLISE DA VARIÁVEL TARGET - [{self.target}]\n")
+        display_markdown(f"### 2. ANÁLISE DA VARIÁVEL TARGET - [{self.target}]", raw=True) # Exibe título da análise
         train_target = False # Inicializa variável de controle como False
         if self.target not in self.df_L0.columns: # Verifica se a coluna target existe no dataset
             print(f"\33[91mVariável [{self.target}] não encontrada no Dataset de Treino.\n") # Mensagem de erro
@@ -121,14 +113,12 @@ class Eda: # Definição da classe para Análise Exploratória de Dados (EDA)
         print(f"Valores nulos: {target_data.isnull().sum()}") # Conta valores nulos
 
         if target_data.dtype in ['object', 'category', 'bool']: # Verifica se variável é categórica
-            # display_markdown("#### ESTATÍSTICAS CATEGÓRICAS", raw=True) # Subtítulo para estatísticas categóricas
-            print("ESTATÍSTICAS CATEGÓRICAS")
+            display_markdown("#### ESTATÍSTICAS CATEGÓRICAS", raw=True) # Subtítulo para estatísticas categóricas
             print(f"Valores únicos: {list(target_data.unique())}") # Lista valores únicos
             print(f"Moda: {target_data.mode().iloc[0] if not target_data.mode().empty else 'N/A'}") # Calcula moda
             print(f"\nDistribuição de frequências: {target_data.value_counts()}") # Distribuição de frequências
         else: # Se variável é numérica
-            # display_markdown("#### ESTATÍSTICAS NUMÉRICAS", raw=True) # Subtítulo para estatísticas numéricas
-            print("ESTATÍSTICAS NUMÉRICAS")
+            display_markdown("#### ESTATÍSTICAS NUMÉRICAS", raw=True) # Subtítulo para estatísticas numéricas
             print(f"Média: {target_data.mean():,.2f}") # Calcula e exibe média
             print(f"Mediana: {target_data.median():,.2f}") # Calcula e exibe mediana
             print(f"Desvio Padrão: {target_data.std():,.2f}") # Calcula e exibe desvio padrão
@@ -154,8 +144,7 @@ class Eda: # Definição da classe para Análise Exploratória de Dados (EDA)
 
     ###################################################################################################################################################
     def summary(self, df): # Method para exibir resumo do dataset
-        # display_markdown("### 4. RESUMO DO DATASET", raw=True) # Título da seção de resumo
-        print("4. RESUMO DO DATASET\n")
+        display_markdown("### 4. RESUMO DO DATASET", raw=True) # Título da seção de resumo
         print(f"Formato: {df.shape}") # Exibe dimensões do dataset (linhas, colunas)
         print(f"Variável Target: {self.target}") # Exibe nome da variável target
         print(f"Variáveis para Comparação: {self.columns}") # Exibe lista de colunas disponíveis
@@ -221,8 +210,7 @@ class Eda: # Definição da classe para Análise Exploratória de Dados (EDA)
 
     ###################################################################################################################################################
     def analysis_columns(self, df): # Method para analisar relação entre colunas e target
-        # display_markdown("### 5. ANÁLISE DE VARIÁVEIS PARA COMPARAÇÃO", raw=True) # Título da seção
-        print("5. ANÁLISE DE VARIÁVEIS PARA COMPARAÇÃO")
+        display_markdown("### 5. ANÁLISE DE VARIÁVEIS PARA COMPARAÇÃO", raw=True) # Título da seção
 
         if df[self.target].dtype in ['object', 'category', 'bool']: # Verifica se target é categórico
             for col in self.columns: # Itera sobre todas as colunas
@@ -333,8 +321,7 @@ class Eda: # Definição da classe para Análise Exploratória de Dados (EDA)
 
     ###################################################################################################################################################
     def correlation_heatmap(self, df): # Method para criar matriz de correlação completa
-        # display_markdown("### 6. MATRIZ DE CORRELAÇÃO", raw=True) # Título da seção
-        print("6. MATRIZ DE CORRELAÇÃO")
+        display_markdown("### 6. MATRIZ DE CORRELAÇÃO", raw=True) # Título da seção
         numeric_cols = df.select_dtypes(include=[np.number]).columns # Seleciona apenas colunas numéricas
 
         if len(numeric_cols) < 2: # Verifica se há pelo menos 2 variáveis numéricas
